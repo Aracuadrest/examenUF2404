@@ -8,27 +8,17 @@ public class Hora {
 
 	// Constructor sin parámetros
 	public Hora() {
-		this.horas = 00;
-		this.minutos = 00;
-		this.segundos = 00;
+		this.horas = 0;
+		this.minutos = 0;
+		this.segundos = 0;
 	}
 
 	// Constructor con parámetros
 	public Hora(int horas, int minutos, int segundos) {
-		if (horas >= 24 || minutos >= 60 || segundos >= 60) {
-			this.horas = 00;
-			this.minutos = 00;
-			this.segundos = 00;
-		} else {
-			this.horas = horas;
-			this.minutos = minutos;
-			this.segundos = segundos;
-		}
+		setHora(horas,minutos,segundos);
 
 	}
-
 	// Constructor de copia
-
 	public Hora(Hora h) {
 		this.horas = h.horas;
 		this.minutos = h.minutos;
@@ -40,10 +30,10 @@ public class Hora {
 	 * boolean indicando si la hora es correcta o falsa
 	 */
 	private static boolean valida(int horas, int minutos, int segundos) {
-		if (horas >= 24 || minutos >= 60 || segundos >= 60) {
-			return false;
+		if (horas >= 0 && horas<24 && minutos >= 0 && minutos<60 && segundos >= 0 && minutos<60) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	// Métodos getters de todos los atributos
 
@@ -64,7 +54,7 @@ public class Hora {
 	 * comprobar si es la hora correcta y establecerla (usa el metodo valida)
 	 */
 	public void setHora(int hora, int min, int seg) {
-		if (Hora.valida(hora, min, seg) == true) {
+		if (valida(hora, min, seg)) {
 			this.horas = hora;
 			this.minutos = min;
 			this.segundos = seg;
@@ -92,8 +82,8 @@ public class Hora {
 	/**
 	 * Método deSegundos(int) convierte los segundos pasados a horas,min y seg.
 	 */
-	public String deSegundos(int seg) {
-		int min;
+	public void deSegundos(int seg) {
+		/*int min;
 		int segun;
 		int hora;
 		int i;
@@ -113,13 +103,20 @@ public class Hora {
 		this.horas=hora;
 		this.minutos=min;
 		this.segundos=segun;
-		return String.format("%02d:%02d:%02d\n",horas,minutos,segundos);
+		return String.format("%02d:%02d:%02d\n",horas,minutos,segundos);*/
+		int resto=seg%86400;
+		int sgs= resto%60;
+		resto=resto/60;
+		
+		int min = resto%60;
+		int h=resto/60;
+		this.setHora(h, min, seg);
 	}
 
 	/**
 	 * Método segundosEntre(Hora) devuelve un entero con el numero de sendos entre las dos
 	 */
 	public int segundosEntre(Hora h) {
-		return (this.aSegundos()-h.aSegundos());
+		return Math.abs(this.aSegundos()-h.aSegundos());
 	}
 }
